@@ -1,0 +1,38 @@
+version: '2'
+services:
+  dependencies:
+    image: orcid/registry-dependencies:${TAG:-0.0.1}
+    entrypoint: sleep infinity
+    build:
+      context: .
+      args:
+        tag_numeric: ${TAG:-0.0.1}
+    # stop dependencies from being started with a compose up
+    profiles:
+      - build
+
+  web:
+    image: ${DOCKER_REG_PRIVATE}/orcid/orcid-web:${TAG:-0.0.1}
+    # entrypoint: sleep infinity
+    build:
+      cache_from:
+        - orcid/registry-dependencies:${TAG:-0.0.1}
+      context: .
+      dockerfile: orcid-web/Dockerfile
+      args:
+        tag_numeric: ${TAG:-0.0.1}
+    env_file:
+      # defaults and dev config for all apps
+      - default.env
+      # defaults and dev config per app
+      - orcid-web/default.env
+      # config written out by our deployment system
+      - orcid-web/deployment.env
+      # anything secure that is non prod separated goes here
+      - ${DOCKER_DEV_ENV_FILE:-empty.env}
+
+    ports:
+      - 0.0.0.0:8080:8080
+
+
+
