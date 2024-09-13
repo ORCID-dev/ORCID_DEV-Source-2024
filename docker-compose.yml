@@ -11,6 +11,14 @@ services:
     profiles:
       - build
 
+  redis:
+    image: orcid/registry/redis:7.2.5-alpine
+    ports:
+      - '6379:6379'
+    build:
+      context: .
+      dockerfile: redis/Dockerfile
+
   web:
     image: ${DOCKER_REG_PRIVATE}/orcid/orcid-web:${TAG:-0.0.1}
     # entrypoint: sleep infinity
@@ -24,6 +32,9 @@ services:
     env_file:
       # defaults and dev config for all apps
       - default.env
+      - properties/default.orcid_core.env
+      - properties/default.misc.env
+      - properties/default.frontend.env
       # defaults and dev config per app
       - orcid-web/default.env
       # config written out by our deployment system
@@ -33,6 +44,5 @@ services:
 
     ports:
       - 0.0.0.0:8080:8080
-
 
 

@@ -79,6 +79,12 @@ RUN curl -L -s https://download.newrelic.com/newrelic/java-agent/newrelic-agent/
 RUN apt-get update
 RUN apt-get install -y j2cli
 
+# add orcid ca to allow Java application to trust other containers
+ADD certs/cacerts /opt/java/openjdk/lib/security/cacerts
+
+# add orcid ca to system to allow curl healthchecks to work
+ADD certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+
 
 COPY entrypoint.sh .
 RUN chmod +x ./entrypoint.sh

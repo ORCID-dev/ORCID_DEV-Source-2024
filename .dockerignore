@@ -1,14 +1,20 @@
-# Ignore everything
-*
-**
 
-# Except pom.xml files
-!pom.xml
-!**/pom.xml
+.git/**
 
-!newrelic.yml
-!entrypoint.sh
-!**.j2
-!**log4j2.xml
-# Except src/ subdirectories
-!**/src/*
+
+# # Ignore everything
+# *
+# **
+# 
+# # Except pom.xml files
+# !pom.xml
+# !**/pom.xml
+# 
+# !newrelic.yml
+# !entrypoint.sh
+# !**.j2
+# !**log4j2.xml
+# !**.crt
+# !cacerts
+# # Except src/ subdirectories
+# !**/src/*
