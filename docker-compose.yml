@@ -19,8 +19,20 @@ services:
       context: .
       dockerfile: redis/Dockerfile
 
+  postgres:
+    image: postgres:13.13-alpine3.19
+    environment:
+      POSTGRES_DB: orcid
+      POSTGRES_USER: orcid
+      POSTGRES_PASSWORD: orcid
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - '5432:5432'
+
   web:
-    image: ${DOCKER_REG_PRIVATE}/orcid/orcid-web:${TAG:-0.0.1}
+    image: ${DOCKER_REG_PRIVATE}/orcid/registry/orcid-web:${TAG:-0.0.1}
     # entrypoint: sleep infinity
     build:
       cache_from:
@@ -45,4 +57,6 @@ services:
     ports:
       - 0.0.0.0:8080:8080
 
+volumes:
+  postgres_data:
 
