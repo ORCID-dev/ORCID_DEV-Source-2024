@@ -27,5 +27,10 @@ on:
 
 jobs:
   unit_tests_report:
-    uses: ./.github/workflows/unit_tests_report.yml
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail the job for demonstration
+        run: exit 1
+
+    # uses: ./.github/workflows/unit_tests_report.yml
 
