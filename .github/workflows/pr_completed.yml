@@ -5,7 +5,8 @@ name: pr_completed
 
 on:
   workflow_run:
-    workflows: [pr]
+    workflows:
+      - pr
     types:
       - completed
 
@@ -27,10 +28,5 @@ on:
 
 jobs:
   unit_tests_report:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Fail the job for demonstration
-        run: exit 1
-
-    # uses: ./.github/workflows/unit_tests_report.yml
+    uses: ./.github/workflows/unit_tests_report.yml
 
