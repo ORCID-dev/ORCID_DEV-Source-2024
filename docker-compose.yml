@@ -22,9 +22,9 @@ services:
   postgres:
     image: postgres:13.13-alpine3.19
     environment:
-      POSTGRES_DB: orcid
-      POSTGRES_USER: orcid
-      POSTGRES_PASSWORD: orcid
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d

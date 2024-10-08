@@ -67,8 +67,10 @@ RUN mvn -T 1C --batch-mode -DgenerateBackupPoms=false \
 -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 
 # For Java 11 and Tomcat 9
-# FROM tomcat:9.0.93-jdk11-temurin-jammy
-FROM tomcat:9.0.91-jdk11-temurin-focal
+FROM tomcat:9.0.93-jdk11-temurin-jammy
+
+# Focal has no j2cli support
+# FROM tomcat:9.0.91-jdk11-temurin-focal
 
 # copy jar file from build
 COPY --from=maven /build/*/target/*.war /usr/local/tomcat/webapps/orcid-web.war
