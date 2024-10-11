@@ -31,6 +31,18 @@ services:
     ports:
       - '5432:5432'
 
+  # orcid-angular project
+  frontend:
+    image: ${DOCKER_REG_PRIVATE}/orcid/registry/orcid-web-frontend-local:${TAG:-0.0.1}
+    # entrypoint: sleep infinity
+    build:
+      context: .
+      dockerfile: 'FIXME: must build in the orcid-angular project first Dockerfile.build'
+      args:
+        build_env: ${BUILD_ENV:-local}
+    ports:
+      - 0.0.0.0:13105:8080
+
   web:
     image: ${DOCKER_REG_PRIVATE}/orcid/registry/orcid-web:${TAG:-0.0.1}
     # entrypoint: sleep infinity
@@ -55,7 +67,7 @@ services:
       - ${DOCKER_DEV_ENV_FILE:-empty.env}
 
     ports:
-      - 0.0.0.0:8080:8080
+      - 0.0.0.0:13100:8080
 
 volumes:
   postgres_data:
