@@ -20,12 +20,19 @@ jobs:
   lint:
     uses: ./.github/workflows/lint.yml
 
-  unit_tests_publish:
-    uses: ./.github/workflows/unit_tests_publish.yml
+  maven_test_publish_matrix:
+    uses: ./.github/workflows/maven_test_publish_matrix.yml
     with:
       seed_maven_cache: true
       install_maven_dependencies: true
 
+
+#   unit_tests_publish:
+#     uses: ./.github/workflows/unit_tests_publish.yml
+#     with:
+#       seed_maven_cache: true
+#       install_maven_dependencies: true
+# 
 
 #   NOTE: codeql is only available on public repos or enterprise github accounts
 #   codeql:
