@@ -3,6 +3,7 @@ name: maven_test_publish_matrix
 # run maven tests and publish results in one step
 # run from privileged branch
 
+
 permissions:
   checks: write
   contents: read
@@ -79,11 +80,10 @@ on:
 jobs:
   maven_test:
     strategy:
-    matrix:
-      # The include keyword that adds a new variable
-      include:
-        - artifact_name: orcid-message-listener
-        - artifact_name: orcid-activemq
+      matrix:
+        include:
+          - project: orcid-message-listener
+          - project: orcid-activemq
 
     runs-on: ubuntu-latest
     steps:
