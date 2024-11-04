@@ -12,11 +12,6 @@ permissions:
 on:
   workflow_call:
     inputs:
-      project:
-        description: 'Name of the artifact env'
-        required: false
-        default: 'prod'
-        type: string
       version_tag:
         description: 'Name of the tag to build'
         required: false
@@ -45,11 +40,6 @@ on:
 
   workflow_dispatch:
     inputs:
-      project:
-        description: 'Name of the artifact env'
-        required: false
-        default: 'prod'
-        type: string
       version_tag:
         description: 'Name of the tag to build'
         required: false
@@ -172,7 +162,7 @@ jobs:
         if: always()
         with:
           name: "maven_test_${{ matrix.project }}"
-          path: ${{ inputs.project }}/target/surefire-reports/*.xml
+          path: ${{ matrix.project }}/target/surefire-reports/*.xml
           reporter: java-junit
           fail-on-error: true
 
