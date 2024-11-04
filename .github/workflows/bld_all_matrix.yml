@@ -269,23 +269,23 @@ jobs:
           version_tag_numeric: "${{ steps.version.outputs.version_tag_numeric }}"
 
 
-      - name: deploy war file
-        run: |
-          mvn --batch-mode \
-              --settings settings-deploy.xml \
-              --file "${project}/pom.xml" \
-              -Dmaven.test.skip \
-              -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
-              -DaltReleaseDeploymentRepository="github::${ARTIFACT_URL}${ARTIFACT_REPO_PATH}" \
-              deploy -Dmaven.test.skip
-        env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          ARTIFACT_URL: "${{ secrets.ARTIFACT_URL }}"
-          ARTIFACT_REPO_PATH: "${{ secrets.ARTIFACT_REPO_PATH }}"
-          ARTIFACT_USER: "${{ secrets.ARTIFACT_USER }}"
-          ARTIFACT_PASSWORD: "${{ secrets.ARTIFACT_PASSWORD }}"
-          project: "${{ matrix.artifact_name }}"
-
+#       - name: deploy war file
+#         run: |
+#           mvn --batch-mode \
+#               --settings settings-deploy.xml \
+#               --file "${project}/pom.xml" \
+#               -Dmaven.test.skip \
+#               -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
+#               -DaltReleaseDeploymentRepository="github::${ARTIFACT_URL}${ARTIFACT_REPO_PATH}" \
+#               deploy -Dmaven.test.skip
+#         env:
+#           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+#           ARTIFACT_URL: "${{ secrets.ARTIFACT_URL }}"
+#           ARTIFACT_REPO_PATH: "${{ secrets.ARTIFACT_REPO_PATH }}"
+#           ARTIFACT_USER: "${{ secrets.ARTIFACT_USER }}"
+#           ARTIFACT_PASSWORD: "${{ secrets.ARTIFACT_PASSWORD }}"
+#           project: "${{ matrix.artifact_name }}"
+# 
 
 
 
