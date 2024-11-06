@@ -1,7 +1,4 @@
-name: maven_test_publish
-
-# run maven tests and publish results in one step
-# run from privileged branch
+name: mvn_test
 
 permissions:
   checks: write
@@ -11,11 +8,6 @@ permissions:
 on:
   workflow_call:
     inputs:
-      project:
-        description: 'Name of the artifact env'
-        required: false
-        default: 'prod'
-        type: string
       version_tag:
         description: 'Name of the tag to build'
         required: false
@@ -44,11 +36,6 @@ on:
 
   workflow_dispatch:
     inputs:
-      project:
-        description: 'Name of the artifact env'
-        required: false
-        default: 'prod'
-        type: string
       version_tag:
         description: 'Name of the tag to build'
         required: false
@@ -78,6 +65,21 @@ on:
 
 jobs:
   maven_test:
+    strategy:
+      matrix:
+        include:
+          - project: orcid-message-listener
+          - project: orcid-activemq
+          - project: orcid-api-web
+          - project: orcid-internal-api
+          - project: orcid-pub-web
+          - project: orcid-scheduler-web
+          - project: orcid-web
+          - project: orcid-utils
+          - project: orcid-core
+          - project: orcid-persistence
+          - project: orcid-api-common
+
     runs-on: ubuntu-latest
     steps:
       - name: git-checkout-ref-action
@@ -153,19 +155,24 @@ jobs:
           version_tag_numeric: ${{ steps.version.outputs.version_tag_numeric }}
 
 ########################################################################################
-      - name: "Test ${{ inputs.project }}"
+      - name: "Test ${{ matrix.project }}"
         run: |
-          mvn -T 1C --batch-mode -Dmaven.test.failure.ignore=true test \
+          mvn -T 1C --batch-mode test \
               -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
-              --projects ${{ inputs.project }}
+              --projects ${{ matrix.project }} --fail-at-end
 
-      # NOTE: if the above test fail then this step will report that failure and stop the run
-      - name: Publish Unit Test Results
+      - name: Publish unit test report for non forked repo
+        if: ${{ failure() && (github.event.pull_request.head.repo.full_name == github.repository) }} # only report if a test has failed and we are a non forked repo
         uses: dorny/test-reporter@e9fa2f582c0ebbe2e263fd18fad744d52e0b0203
-        if: always()
         with:
-          name: "maven_test_${{ inputs.project }}"
-          path: ${{ inputs.project }}/target/surefire-reports/*.xml
+          name: "Unit test report for ${{ matrix.project }}"
+          path: ${{ matrix.project }}/target/surefire-reports/*.xml
           reporter: java-junit
           fail-on-error: true
 
+      - name: Annotate only test report for forked repo
+        uses: mikepenz/action-junit-report@ec3a351c13e080dc4fa94c49ab7ad5bf778a9668 # v5
+        if: ${{ failure() &&  (github.event.pull_request.head.repo.full_name != github.repository) }} # only report if a test has failed and we are a forked repo
+        with:
+          report_paths: ${{ matrix.project }}/target/surefire-reports/*.xml
+          annotate_only: true # forked repo cannot write to checks so just do annotations
