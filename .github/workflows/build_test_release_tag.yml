@@ -18,6 +18,12 @@ on:
         required: false
         default: "default"
         type: string
+      rel_tag:
+        description: Whether to tag the code
+        type: boolean
+        required: false
+        default: true
+
 
   workflow_dispatch:
     inputs:
@@ -42,7 +48,11 @@ on:
         required: false
         default: "default_branch"
         type: string
-
+      rel_tag:
+        description: Whether to tag the code
+        type: boolean
+        required: false
+        default: true
 
 # cancel running job if another commit comes in
 concurrency:
@@ -107,6 +117,7 @@ jobs:
   rel_tag:
     uses: ./.github/workflows/rel_tag.yml
     needs: bld_all
+    if: ${{ inputs.rel_tag }}
     with:
       version_tag: ${{ inputs.version_tag }}
       bump: ${{ inputs.bump }}
@@ -117,3 +128,4 @@ jobs:
       contents: write
       issues: read
       pull-requests: write
+
