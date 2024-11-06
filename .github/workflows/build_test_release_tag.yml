@@ -93,8 +93,8 @@ jobs:
       - seed_maven_cache
       - install_maven_dependencies
 ##############################################################################
-  bld_all:
-    uses: ./.github/workflows/bld_all.yml
+  bld_mvn:
+    uses: ./.github/workflows/bld_mvn.yml
     secrets: inherit # pass all secrets for uploading assets
     needs:
       - lint
@@ -116,7 +116,7 @@ jobs:
 
   rel_tag:
     uses: ./.github/workflows/rel_tag.yml
-    needs: bld_all
+    needs: bld_mvn
     if: ${{ inputs.rel_tag }}
     with:
       version_tag: ${{ inputs.version_tag }}
