@@ -43,6 +43,16 @@ services:
     ports:
       - 0.0.0.0:13105:8080
 
+
+  web_proxy:
+    image: ${DOCKER_REG_PRIVATE}/orcid/registry/orcid-web-proxy:${TAG:-0.0.1}
+    # entrypoint: sleep infinity
+    build:
+      context: orcid-web-proxy
+      dockerfile: Dockerfile
+    ports:
+      - 0.0.0.0:13107:80
+
   web:
     image: ${DOCKER_REG_PRIVATE}/orcid/registry/orcid-web:${TAG:-0.0.1}
     # entrypoint: sleep infinity
