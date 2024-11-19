@@ -33,25 +33,24 @@ services:
 
   # orcid-angular project
   frontend:
-    image: ${DOCKER_REG_PRIVATE}/orcid/registry/orcid-web-frontend-local:${TAG:-0.0.1}
+    image: ${DOCKER_REG_PRIVATE}/orcid/registry/orcid-web-frontend-qa:${TAG:-0.0.1}
     # entrypoint: sleep infinity
     build:
       context: .
       dockerfile: 'FIXME: must build in the orcid-angular project first Dockerfile.build'
-      args:
-        build_env: ${BUILD_ENV:-local}
     ports:
-      - 0.0.0.0:13105:8080
+      - 0.0.0.0:13106:80
 
 
   web_proxy:
     image: ${DOCKER_REG_PRIVATE}/orcid/registry/orcid-web-proxy:${TAG:-0.0.1}
     # entrypoint: sleep infinity
     build:
-      context: orcid-web-proxy
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: orcid-web-proxy/Dockerfile
     ports:
       - 0.0.0.0:13107:80
+      - 0.0.0.0:13108:443
 
   web:
     image: ${DOCKER_REG_PRIVATE}/orcid/registry/orcid-web:${TAG:-0.0.1}
