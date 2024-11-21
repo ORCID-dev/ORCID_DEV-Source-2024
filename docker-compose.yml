@@ -31,6 +31,17 @@ services:
     ports:
       - '5432:5432'
 
+  lb:
+    image: ${DOCKER_REG_PRIVATE}/orcid/registry/orcid-lb:${TAG:-0.0.1}
+    # entrypoint: sleep infinity
+    build:
+      context: .
+      dockerfile: orcid-lb/Dockerfile
+    ports:
+      - 0.0.0.0:80:80
+      - 0.0.0.0:443:443
+
+
   # orcid-angular project
   frontend:
     image: ${DOCKER_REG_PRIVATE}/orcid/registry/orcid-web-frontend-qa:${TAG:-0.0.1}
