@@ -62,6 +62,9 @@ services:
     ports:
       - 0.0.0.0:13107:80
       - 0.0.0.0:13108:443
+    environment:
+      SSL_CERTIFICATE: /etc/ssl/certs/docker_dev.pem
+      SSL_CERTIFICATE_KEY: /etc/ssl/certs/docker_dev-key.pem
 
   web:
     image: ${DOCKER_REG_PRIVATE}/orcid/registry/orcid-web:${TAG:-0.0.1}
