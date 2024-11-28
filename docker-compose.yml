@@ -60,6 +60,7 @@ services:
       - 0.0.0.0:13106:80
     profiles:
       - dev
+      - ui
 
   web_proxy:
     image: ${DOCKER_REG_PRIVATE}/orcid/registry/orcid-web-proxy:${TAG:-0.0.1}
@@ -76,6 +77,7 @@ services:
       - ${SSL_CERTIFICATE_KEY:-./certs/docker_dev-key.pem}:/etc/nginx/certs/docker-key.pem
     profiles:
       - dev
+      - ui
 
   web:
     image: ${DOCKER_REG_PRIVATE}/orcid/registry/orcid-web:${TAG:-0.0.1}
@@ -103,6 +105,7 @@ services:
       - 0.0.0.0:13100:8080
     profiles:
       - dev
+      - ui
 
 volumes:
   postgres_data:
